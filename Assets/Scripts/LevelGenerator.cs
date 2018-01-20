@@ -26,7 +26,7 @@ public class LevelGenerator : MonoBehaviour {
 			if (block != null) {
 				tile = Instantiate (block);
 				tile.transform.SetParent (holder.transform);
-				tile.transform.localPosition = new Vector3(x, y, 0);
+				tile.transform.localPosition = new Vector3(x, y, 1);
 			}
 			blocks.Add (tile);
 		}
