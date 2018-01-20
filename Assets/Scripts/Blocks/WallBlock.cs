@@ -49,6 +49,18 @@ public class WallBlock : MonoBehaviour {
 				up = true;
 			}
 		}
+		if (x == 0) {
+			left = true;
+		}
+		if (x == width - 1) {
+			right = true;
+		}
+		if (y == 0) {
+			up = true;
+		}
+		if (y == height - 1) {
+			down = true;
+		}
 		if (up && down && left && right) {
 			renderer.sprite = tile11;
 		} else if (up && down && left) {

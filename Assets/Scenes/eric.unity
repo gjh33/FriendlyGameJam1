@@ -140,8 +140,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630e4cd7449ae48a7aeaa6685abfe0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 14
+  width: 20
   perlinSeed: 0
+  layerDepth: 100
+  innerWidth: 8
   wall: {fileID: 1733232389486136, guid: 667dc080845174e87b30622ee94e08d7, type: 2}
   spike: {fileID: 1148809887185628, guid: 96e26c386811d4d4d8f158196f1af5f7, type: 2}
 --- !u!4 &84800979
@@ -241,7 +243,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 2068045493}
-  scale: 0.8
+  xscale: 1
+  yscale: 1
 --- !u!1 &1860908215
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +352,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.09411765, g: 0.11372549, b: 0.12941177, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -383,7 +386,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2068045490}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.4, z: -10}
+  m_LocalPosition: {x: 0, y: -9, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 312981196}

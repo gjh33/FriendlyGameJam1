@@ -7,6 +7,8 @@ public class LevelGenerator : MonoBehaviour {
 	[Header("Input parameters")]
 	public int width = 0;
 	public int perlinSeed = 0;
+	public int layerDepth = 100;
+	public int innerWidth = 10;
 
 	[Header("Block types")]
 	public GameObject wall;
@@ -31,13 +33,12 @@ public class LevelGenerator : MonoBehaviour {
 		return blocks;
 	}
 
-	public void PostProcess(List<List<GameObject>> tiles){
-		int currentHeight = (int) tiles [0][0].transform.localPosition.y;
+	public void PostProcess(List<List<GameObject>> tiles, int height){
 		foreach (List<GameObject> line in tiles) {
 			foreach (GameObject child in line) {
 				if (child != null) {
 					int x = (int) child.transform.localPosition.x;
-					child.GetComponent<Block> ().PostProcess (x, currentHeight - (int) child.transform.localPosition.y, tiles);
+					child.GetComponent<Block> ().PostProcess (x, height - (int) child.transform.localPosition.y, tiles);
 				}
 			}
 		}
@@ -48,12 +49,27 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private GameObject GenerateBlock(float x, float y){
-		if (x <= 1 || x >= width - 2) {
-			return wall;
-		}
-		float noise = Random.value;
-		if (noise < 0.05) {
-			return spike;
+		if (y < 0) {
+			int leftRandOffset = Mathf.RoundToInt(2.5f * Mathf.PerlinNoise(((float)y) / 10 + Random.value * 100, 0)) - 1;
+			int rightRandOffset = Mathf.RoundToInt(2.5f * Mathf.PerlinNoise(((float)y) / 10 + Random.value * 100, 0)) - 1;
+			if (x < width / 2 - innerWidth / 2 - leftRandOffset || x >= width / 2 + innerWidth / 2 + rightRandOffset) {
+				return wall;
+			}
+			float noise = Random.value;
+			if (noise < 0.05f * (-y / layerDepth)) {
+				return spike;
+			}
+		} else {
+			// above zone generation
+			if ((x < width / 2 - innerWidth / 2 - 1 || x >= width / 2 + innerWidth / 2 + 1) && y == 0) {
+				return wall;
+			} else if ((x < width / 2 - innerWidth / 2 - 3 || x >= width / 2 + innerWidth / 2 + 3) && y == 1) {
+				return wall;
+			} else if ((x < width / 2 - innerWidth / 2 - 4 || x >= width / 2 + innerWidth / 2 + 4) && (y > 1 && y <= 10)) {
+				return wall;
+			} else if (y > 10) {
+				return wall;
+			}
 		}
 		return null;
 	}

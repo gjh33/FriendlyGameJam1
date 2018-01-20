@@ -85,7 +85,7 @@ public class CameraUpdate : MonoBehaviour {
 
 	void LateUpdate() {
 		if (dirty) {
-			generator.PostProcess (tiles);
+			generator.PostProcess (tiles, Mathf.CeilToInt(transform.position.y + camera.orthographicSize) - 1 + offset);
 			dirty = false;
 		}
 	}

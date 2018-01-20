@@ -5,7 +5,8 @@ using UnityEngine;
 public class Parallax : MonoBehaviour {
 
 	public Camera cam;
-	public float scale = 1;
+	public float xscale = 1;
+	public float yscale = 1;
 	new private MeshRenderer renderer;
 
 	void Start() {
@@ -15,6 +16,6 @@ public class Parallax : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		renderer.material.mainTextureOffset = new Vector2 (0f, cam.transform.position.y / 7 * scale);
+		renderer.material.mainTextureOffset = new Vector2 (cam.transform.position.x / 7 * xscale, cam.transform.position.y / 7 * yscale);
 	}
 }
