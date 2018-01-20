@@ -12,31 +12,43 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject wall;
 	public GameObject spike;
 
-	public GameObject GenerateLine(int y){
+	public List<GameObject> GenerateLine(int y, GameObject holder){
 		int seed = (int) (Mathf.PerlinNoise (((float)y + perlinSeed) / 10, ((float)y + perlinSeed) / 10) * 100000);
+		List<GameObject> blocks = new List<GameObject> ();
 		Random.InitState (seed);
-		// Generate Line holder
-		GameObject line = new GameObject("Line " + y);
-		line.transform.position = ToWorld (new Vector3 (0, y));
 
 		//  Spawn Tiles based on location
 		for (int x = 0; x < width; x++) {
 			GameObject block = GenerateBlock (x, y);
+			GameObject tile = null;
 			if (block != null) {
-				GameObject tile = Instantiate (block);
-				tile.transform.SetParent (line.transform);
-				tile.transform.localPosition = new Vector3(x, 0, 0);
+				tile = Instantiate (block);
+				tile.transform.SetParent (holder.transform);
+				tile.transform.localPosition = new Vector3(x, y, 0);
 			}
+			blocks.Add (tile);
 		}
-		return line;
+		return blocks;
 	}
 
-	private Vector3 ToWorld(Vector3 coord){
+	public void PostProcess(List<List<GameObject>> tiles){
+		int currentHeight = (int) tiles [0][0].transform.position.y;
+		foreach (List<GameObject> line in tiles) {
+			foreach (GameObject child in line) {
+				if (child != null) {
+					int x = (int) child.transform.localPosition.x;
+					child.GetComponent<Block> ().PostProcess (x, currentHeight - (int) child.transform.localPosition.y, tiles);
+				}
+			}
+		}
+	}
+
+	public Vector3 ToWorld(Vector3 coord){
 		return new Vector3(coord.x + 0.5f - width / 2, coord.y + 0.5f, 0);
 	}
 
 	private GameObject GenerateBlock(float x, float y){
-		if (x == 0 || x == width - 1) {
+		if (x <= 1 || x >= width - 2) {
 			return wall;
 		}
 		float noise = Random.value;

@@ -20,7 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4540959744454862}
   - component: {fileID: 61394459437419376}
-  - component: {fileID: 212756697935925030}
+  - component: {fileID: 212570865100250872}
+  - component: {fileID: 114693382323315564}
+  - component: {fileID: 114536738243014812}
   m_Layer: 0
   m_Name: Wall Block
   m_TagString: Untagged
@@ -35,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1733232389486136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -58,7 +60,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 6.26, y: 6.26}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -66,7 +68,40 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!212 &212756697935925030
+--- !u!114 &114536738243014812
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1733232389486136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81be5448626854732bbb412861335742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tile00: {fileID: 21300000, guid: d4f7095afa87a414caf27e88123dbca6, type: 3}
+  tile01: {fileID: 21300000, guid: 515d91518f392494184167f29fd51209, type: 3}
+  tile02: {fileID: 21300000, guid: 31fc4bb260cf3496894af146e12dac3a, type: 3}
+  tile03: {fileID: 21300000, guid: 8a46694baf6d542cc87770b65caef436, type: 3}
+  tile10: {fileID: 21300000, guid: 4e6786a79525f445a8d07bfa2a40d7a8, type: 3}
+  tile11: {fileID: 21300000, guid: f00b47490eb7a42e4988ccd62d2e29fc, type: 3}
+  tile13: {fileID: 21300000, guid: 71a1981feb5cc45c6a91ca395b16889d, type: 3}
+  tile20: {fileID: 21300000, guid: ede4cfd621a74415cbac8ab185e38fbd, type: 3}
+  tile21: {fileID: 21300000, guid: e6ec88a8f2fd64d9f9e1753c457600b7, type: 3}
+  tile22: {fileID: 21300000, guid: 3bf57bba63a2f4ba990375788eb3f268, type: 3}
+  tile23: {fileID: 21300000, guid: 03be73b2b973d448b90796048823b82a, type: 3}
+--- !u!114 &114693382323315564
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1733232389486136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b03ccb932240470ba6749f0d28cb1c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!212 &212570865100250872
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -105,7 +140,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.26, y: 6.26}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

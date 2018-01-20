@@ -6,7 +6,7 @@ public class Parallax : MonoBehaviour {
 
 	public Camera cam;
 	public float scale = 1;
-	private MeshRenderer renderer;
+	new private MeshRenderer renderer;
 
 	void Start() {
 		// Find and store the shader
