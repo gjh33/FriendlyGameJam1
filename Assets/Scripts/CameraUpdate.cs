@@ -39,10 +39,6 @@ public class CameraUpdate : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (dirty) {
-			generator.PostProcess (tiles);
-			dirty = false;
-		}
 		// Determine the location visible ranges
 		int top = Mathf.CeilToInt(transform.position.y + camera.orthographicSize) - 1 + offset;
 		int bot = Mathf.FloorToInt(transform.position.y - camera.orthographicSize) - 1 - offset;
@@ -84,6 +80,13 @@ public class CameraUpdate : MonoBehaviour {
 			previousTop = top;
 			previousBottom = bot;
 			dirty = true;
+		}
+	}
+
+	void LateUpdate() {
+		if (dirty) {
+			generator.PostProcess (tiles);
+			dirty = false;
 		}
 	}
 }

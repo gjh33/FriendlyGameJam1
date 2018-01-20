@@ -32,7 +32,7 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	public void PostProcess(List<List<GameObject>> tiles){
-		int currentHeight = (int) tiles [0][0].transform.position.y;
+		int currentHeight = (int) tiles [0][0].transform.localPosition.y;
 		foreach (List<GameObject> line in tiles) {
 			foreach (GameObject child in line) {
 				if (child != null) {
