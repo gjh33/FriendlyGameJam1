@@ -9,10 +9,15 @@ public class LevelGenerator : MonoBehaviour {
 	public int perlinSeed = 0;
 	public int layerDepth = 100;
 	public int innerWidth = 10;
+	public int ledgePeriod = 100; // Inversely related
+	public int ledgeWidth = 1;
 
 	[Header("Block types")]
 	public GameObject wall;
 	public GameObject spike;
+
+	// Used to offset the ledge
+	private int ledgeSeed = 1000;
 
 	public List<GameObject> GenerateLine(int y, GameObject holder){
 		int seed = (int) (Mathf.PerlinNoise (((float)y + perlinSeed) / 10, ((float)y + perlinSeed) / 10) * 100000);
@@ -26,6 +31,9 @@ public class LevelGenerator : MonoBehaviour {
 			if (block != null) {
 				tile = Instantiate (block);
 				tile.transform.SetParent (holder.transform);
+				Debug.Assert (tile.GetComponent<Block>()); 
+				tile.GetComponent<Block>().x = x; 
+				tile.GetComponent<Block>().y = y; 
 				tile.transform.localPosition = new Vector3(x, y, 1);
 			}
 			blocks.Add (tile);
@@ -37,8 +45,7 @@ public class LevelGenerator : MonoBehaviour {
 		foreach (List<GameObject> line in tiles) {
 			foreach (GameObject child in line) {
 				if (child != null) {
-					int x = (int) child.transform.localPosition.x;
-					child.GetComponent<Block> ().PostProcess (x, height - (int) child.transform.localPosition.y, tiles);
+					child.GetComponent<Block> ().PostProcess (tiles, height);
 				}
 			}
 		}
@@ -50,10 +57,10 @@ public class LevelGenerator : MonoBehaviour {
 
 	private GameObject GenerateBlock(float x, float y){
 		if (y < 0) {
-			int leftRandOffset = Mathf.RoundToInt(2.5f * Mathf.PerlinNoise(((float)y) / 10 + Random.value * 100, 0)) - 1;
-			int rightRandOffset = Mathf.RoundToInt(2.5f * Mathf.PerlinNoise(((float)y) / 10 + Random.value * 100, 0)) - 1;
+			int leftRandOffset = Mathf.RoundToInt(ledgeWidth * Mathf.PerlinNoise(((float)y + perlinSeed) / ledgePeriod, 0));
+			int rightRandOffset = Mathf.RoundToInt(ledgeWidth * Mathf.PerlinNoise(((float)y + perlinSeed + ledgeSeed) / ledgePeriod, 0));
 			if (x < width / 2 - innerWidth / 2 - leftRandOffset || x >= width / 2 + innerWidth / 2 + rightRandOffset) {
-				return wall;
+				return wall;	
 			}
 			float noise = Random.value;
 			if (noise < 0.05f * (-y / layerDepth)) {

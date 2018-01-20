@@ -29,6 +29,9 @@ public class WallBlock : MonoBehaviour {
 		bool up = false, down = false, left = false, right = false;
 		int width = blocks [0].Count;
 		int height = blocks.Count;
+		if (y < 0 || y >= height) {
+			return;
+		}
 		if (x >= 0 && x < width - 1) {
 			if (blocks [y] [x + 1] != null && blocks [y] [x + 1].GetComponent<WallBlock>() != null ) {
 				right = true;
