@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, HitboxHandler {
-    public float Gravity = 100;
-    public float MaxFallSpeed = 1000;
-    public float JumpVelocity = 25;
-    public int MaxJumps = 2;
-    public float WallJumpXForce = 15;
-    public float GroundMovementSpeed = 7;
-    public float AirControlForce = 50;
-    public float MaxAirControlSpeed = 10;
-    public float WallSlideSpeed = 2;
-    public float WallSlideDrag = 5;
+    public float Gravity = 100; // Downwards force. Higher = faster fall speed
+    public float MaxFallSpeed = 1000; // Can't fall faster than this
+    public float JumpVelocity = 25; // Jump strength
+    public float JumpResistance = 5; // How fast your jump ends (As drag)
+    public int MaxJumps = 2; // How many jumps you get after touching a surface
+    public float WallJumpXForce = 15; // When wall jumping, how hard you push off
+    public float GroundMovementSpeed = 7; // Vertical move speed on the ground
+    public float AirControlForce = 50; // Amount of control you have mid air
+    public float MaxAirControlSpeed = 10; // How fast can you move in the air using controls?
+    public float WallSlideSpeed = 2; // How fast you slide on the wall
+    public float WallSlideDrag = 5; // How fast you slow down when grabbing the wall
 
     // Internals
     private enum MoveState { LEFT, RIGHT, NEUTRAL, RIGHT_WALL_SLIDE, LEFT_WALL_SLIDE };
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     private WallType currentWallCollision = WallType.NONE;
     private int curJumpCount = 0;
     private bool grounded = false;
+    private int wallCollisionCount; // Used to only set wall to NONE if no walls are being collided with
 
     void Awake()
     {
@@ -49,10 +51,12 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         if (hitboxCollider.gameObject.name == "RightWallHitbox" && foreignCollider.CompareTag("Wall"))
         {
             currentWallCollision = WallType.RIGHT;
+            wallCollisionCount++;
         }
         if (hitboxCollider.gameObject.name == "LeftWallHitbox" && foreignCollider.CompareTag("Wall"))
         {
             currentWallCollision = WallType.LEFT;
+            wallCollisionCount++;
         }
     }
 
@@ -61,7 +65,8 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         // Assumes we only collide with one wall type at a time
         if ((hitboxCollider.gameObject.name == "RightWallHitbox" || hitboxCollider.gameObject.name == "LeftWallHitbox") && foreignCollider.CompareTag("Wall"))
         {
-            currentWallCollision = WallType.NONE;
+            wallCollisionCount--;
+            if (wallCollisionCount <= 0) currentWallCollision = WallType.NONE; // Only set to none if it's not colliding with any walls
         }
     }
 
@@ -194,6 +199,14 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         if (rb.velocity.y < -MaxFallSpeed)
         {
             rb.velocity = new Vector2(rb.velocity.x, -MaxFallSpeed);
+        }
+
+        // Apply jump drag
+        if (rb.velocity.y > 0)
+        {
+            Vector2 dragForce = new Vector2(0, 0);
+            dragForce.y = -JumpResistance * rb.velocity.y;
+            rb.AddForce(dragForce);
         }
     }
 

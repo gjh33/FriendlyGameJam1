@@ -74,8 +74,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605070734409432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2, y: 1.41, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 4.7450314, y: -566.7966, z: 3}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4287711239326302}
   - {fileID: 4859397621201298}
@@ -88,7 +88,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1072028140115448}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 1, z: 1}
   m_Children: []
@@ -158,7 +158,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 1072028140115448}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -178,7 +178,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 1547635073361660}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -285,16 +285,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e9b963380d86e46bca2412ffa9df45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gravity: 100
-  MaxFallSpeed: 1000
+  Gravity: 35
+  MaxFallSpeed: 25
   JumpVelocity: 25
+  JumpResistance: 5
   MaxJumps: 2
   WallJumpXForce: 10
   GroundMovementSpeed: 7
-  AirControlForce: 40
+  AirControlForce: 65
   MaxAirControlSpeed: 10
-  WallSlideSpeed: 5
-  WallSlideDrag: 5
+  WallSlideSpeed: 7
+  WallSlideDrag: 1
 --- !u!114 &114368595649159382
 MonoBehaviour:
   m_ObjectHideFlags: 1
