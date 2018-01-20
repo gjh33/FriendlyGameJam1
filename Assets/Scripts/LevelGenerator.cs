@@ -12,14 +12,7 @@ public class LevelGenerator : MonoBehaviour {
 	public GameObject wall;
 	public GameObject spike;
 
-	// Use this for initialization
-	void Start () {
-		for (int i = 0; i < 100; i++) {
-			GenerateLine (-i);
-		}
-	}
-
-	public void GenerateLine(int y){
+	public GameObject GenerateLine(int y){
 		int seed = (int) (Mathf.PerlinNoise (((float)y + perlinSeed) / 10, ((float)y + perlinSeed) / 10) * 100000);
 		Random.InitState (seed);
 		// Generate Line holder
@@ -35,6 +28,7 @@ public class LevelGenerator : MonoBehaviour {
 				tile.transform.localPosition = new Vector3(x, 0, 0);
 			}
 		}
+		return line;
 	}
 
 	private Vector3 ToWorld(Vector3 coord){
@@ -46,7 +40,6 @@ public class LevelGenerator : MonoBehaviour {
 			return wall;
 		}
 		float noise = Random.value;
-		print (noise);
 		if (noise < 0.05) {
 			return spike;
 		}
