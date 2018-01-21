@@ -74,7 +74,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605070734409432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.7450314, y: -566.7966, z: 3}
+  m_LocalPosition: {x: -4.73, y: 3.38, z: 3}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4287711239326302}
@@ -289,13 +289,14 @@ MonoBehaviour:
   MaxFallSpeed: 25
   JumpVelocity: 25
   JumpResistance: 5
+  JumpManipulation: 0
   MaxJumps: 2
   WallJumpXForce: 10
   GroundMovementSpeed: 7
   AirControlForce: 65
   MaxAirControlSpeed: 10
-  WallSlideSpeed: 7
-  WallSlideDrag: 1
+  WallSlideSpeed: 10
+  WallSlideDrag: 25
 --- !u!114 &114368595649159382
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
     public Transform target;
+    public Vector2 targetScreenOffset = new Vector2(0, 100);
+
+    private Camera hostCamera;
 
     private void Awake()
     {
-        if (target == null) throw new System.Exception("Camera controller requires a target to follow");
+        hostCamera = GetComponent<Camera>();
+        if (hostCamera == null) throw new System.Exception("This controller must be attached to a camera");
     }
 
     private void Update()
     {
-        transform.position = new Vector2(transform.position.x, target.position.y);
+        Vector2 cameraPosition = new Vector2(transform.position.x, target.position.y);
+        cameraPosition += targetScreenOffset;
+        transform.position = cameraPosition;
     }
 }

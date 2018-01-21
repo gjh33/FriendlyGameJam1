@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, HitboxHandler {
-    public float Gravity = 100; // Downwards force. Higher = faster fall speed
-    public float MaxFallSpeed = 1000; // Can't fall faster than this
+    public float Gravity = 35; // Downwards force. Higher = faster fall speed
+    public float MaxFallSpeed = 25; // Can't fall faster than this
     public float JumpVelocity = 25; // Jump strength
     public float JumpResistance = 5; // How fast your jump ends (As drag)
+    public float JumpManipulation = 5; // How much holding jump affects your jump
     public int MaxJumps = 2; // How many jumps you get after touching a surface
-    public float WallJumpXForce = 15; // When wall jumping, how hard you push off
+    public float WallJumpXForce = 10; // When wall jumping, how hard you push off
     public float GroundMovementSpeed = 7; // Vertical move speed on the ground
-    public float AirControlForce = 50; // Amount of control you have mid air
+    public float AirControlForce = 65; // Amount of control you have mid air
     public float MaxAirControlSpeed = 10; // How fast can you move in the air using controls?
-    public float WallSlideSpeed = 2; // How fast you slide on the wall
-    public float WallSlideDrag = 5; // How fast you slow down when grabbing the wall
+    public float WallSlideSpeed = 7; // How fast you slide on the wall
+    public float WallSlideDrag = 1; // How fast you slow down when grabbing the wall
 
     // Internals
     private enum MoveState { LEFT, RIGHT, NEUTRAL, RIGHT_WALL_SLIDE, LEFT_WALL_SLIDE };
@@ -22,11 +23,12 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     private Rigidbody2D rb;
 
     // Physics switches
-    private MoveState curMoveState = MoveState.NEUTRAL;
-    private WallType currentWallCollision = WallType.NONE;
-    private int curJumpCount = 0;
-    private bool grounded = false;
+    private MoveState curMoveState = MoveState.NEUTRAL; // Current movement state
+    private WallType currentWallCollision = WallType.NONE; // Current type of wall collision
+    private int curJumpCount = 0; // Number of jumps currently available to player
+    private bool grounded = false; // Wheter or not player is grounded
     private int wallCollisionCount; // Used to only set wall to NONE if no walls are being collided with
+    private bool jumpKeyHeld = false;
 
     void Awake()
     {
@@ -80,6 +82,11 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         {
             grounded = true;
         }
+        if (collision.collider.CompareTag("Deadly"))
+        {
+            Kill();
+            GameSystem.instance.GameOver();
+        }
     }
 
     public void Jump()
@@ -101,6 +108,11 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
             grounded = false;
             curJumpCount--;
         }
+    }
+
+    public void Kill()
+    {
+        gameObject.SetActive(false);
     }
     
     private void handleInput()
@@ -166,6 +178,11 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
+            jumpKeyHeld = true;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            jumpKeyHeld = false;
         }
     }
 
@@ -201,12 +218,19 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
             rb.velocity = new Vector2(rb.velocity.x, -MaxFallSpeed);
         }
 
-        // Apply jump drag
+        // When moving upwards
         if (rb.velocity.y > 0)
         {
+            // Apply resistance
             Vector2 dragForce = new Vector2(0, 0);
             dragForce.y = -JumpResistance * rb.velocity.y;
             rb.AddForce(dragForce);
+
+            // Apply jump manipulation
+            if (jumpKeyHeld)
+            {
+                rb.AddForce(new Vector2(0, JumpManipulation));
+            }
         }
     }
 
@@ -262,7 +286,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         // If we're falling slower than wallslide speed after gravity is applied, continue as normal
         if (rb.velocity.y > -WallSlideSpeed) return;
         // else if gravity only takes us a little past target speed just clip to that speed
-        else if (rb.velocity.y > -WallSlideSpeed - Gravity)
+        else if (rb.velocity.y > -WallSlideSpeed - Time.fixedDeltaTime * Gravity)
         {
             rb.velocity = new Vector2(rb.velocity.x, -WallSlideSpeed);
         }
@@ -275,6 +299,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
             Vector2 wallDragForce = new Vector2(0, 0);
             wallDragForce.y = WallSlideDrag;
             rb.AddForce(wallDragForce);
+            Debug.Log("dragging");
         }
     }
 }
