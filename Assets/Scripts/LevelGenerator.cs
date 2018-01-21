@@ -14,7 +14,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	[Header("Block types")]
 	public GameObject wall;
-	public GameObject spike;
+	public GameObject saw;
 
 	// Used to offset the ledge
 	private int ledgeSeed = 1000;
@@ -71,8 +71,10 @@ public class LevelGenerator : MonoBehaviour {
 				block = wall;	
 			}
 			float noise = Random.value;
-			if (noise < 0.05f * (-y / layerDepth)) {
+			if (noise < 0.04f * (-y / layerDepth)) {
 				block = wall;
+			} else if (noise >= 0.04f * (-y / layerDepth) && noise < 0.05f * (-y / layerDepth)) {
+				block = saw;
 			}
 		} else {
 			// above zone generation

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Rotation : MonoBehaviour {
 
-	public float speed = 1f;
+	public float speed = 360f;
+	public float offset = 0f;
 	
 	// Update is called once per frame
 	void Update () {
-		transform.Rotate (new Vector3 (0, 0, speed));
+		transform.rotation = Quaternion.Euler(new Vector3 (0, 0, (Time.time * speed + offset) % 360));
 	}
 }
