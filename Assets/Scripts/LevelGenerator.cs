@@ -79,13 +79,9 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		} else {
 			// above zone generation
-			if ((x < width / 2 - innerWidth / 2 - 1 || x >= width / 2 + innerWidth / 2 + 1) && y == 0) {
+			if ((x < width / 2 - innerWidth / 2 - 1 || x >= width / 2 + innerWidth / 2 + 1) && y >= 0 && y <= 19) {
 				block = wall;
-			} else if ((x < width / 2 - innerWidth / 2 - 3 || x >= width / 2 + innerWidth / 2 + 3) && y == 1) {
-				block = wall;
-			} else if ((x < width / 2 - innerWidth / 2 - 4 || x >= width / 2 + innerWidth / 2 + 4) && (y > 1 && y <= 10)) {
-				block = wall;
-			} else if (y > 10) {
+			} else if (y > 19) {
 				block = wall;
 			}
 		}

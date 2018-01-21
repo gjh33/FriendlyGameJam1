@@ -60,7 +60,6 @@ public class GameSystem : MonoBehaviour {
             playerInstance.transform.position = spawnLocation.transform.position;
             playerInstance.SetActive(true);
         }
-
         // Set camera target
         Camera.main.GetComponent<CameraController>().target = playerInstance.transform;
 
