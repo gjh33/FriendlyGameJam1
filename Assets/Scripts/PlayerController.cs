@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, HitboxHandler {
+    [Header("Physics")]
     public float Gravity = 35; // Downwards force. Higher = faster fall speed
     public float MaxFallSpeed = 25; // Can't fall faster than this
     public float JumpVelocity = 25; // Jump strength
@@ -16,12 +17,24 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     public float MaxAirControlSpeed = 10; // How fast can you move in the air using controls?
     public float WallSlideSpeed = 7; // How fast you slide on the wall
     public float WallSlideDrag = 1; // How fast you slow down when grabbing the wall
+    [Header("Dev Controls")]
     public bool invincible = false;
 
     // Internals
     private enum MoveState { LEFT, RIGHT, NEUTRAL, RIGHT_WALL_SLIDE, LEFT_WALL_SLIDE };
     private enum WallType { LEFT, RIGHT, NONE };
+    private enum Direction { RIGHT, LEFT };
+    private enum AnimationState {
+        NEUTRAL,
+        RUN,
+        WALL_SLIDE,
+        JUMPING,
+        FALLING,
+    }
+    private Direction currentAnimationDirection = Direction.RIGHT;
     private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     // Physics switches
     private MoveState curMoveState = MoveState.NEUTRAL; // Current movement state
@@ -34,11 +47,14 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Behavior
     void Update () {
         handleInput();
+        handleAnimation();
 	}
 
     // Physics
@@ -102,11 +118,13 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
             {
                 xVel = WallJumpXForce;
                 curMoveState = MoveState.RIGHT;
+                currentAnimationDirection = Direction.RIGHT;
             }
             if (curMoveState == MoveState.RIGHT_WALL_SLIDE)
             {
                 xVel = -WallJumpXForce;
                 curMoveState = MoveState.LEFT;
+                currentAnimationDirection = Direction.LEFT;
             }
             rb.velocity = new Vector2(xVel, JumpVelocity);
             grounded = false;
@@ -187,6 +205,63 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         if (Input.GetKeyUp(KeyCode.Space))
         {
             jumpKeyHeld = false;
+        }
+    }
+
+    private void handleAnimation()
+    {
+        // Grounded animations
+        if(grounded)
+        {
+            switch (curMoveState)
+            {
+                case MoveState.NEUTRAL:                   
+                    animator.SetInteger("AnimationState", (int)AnimationState.NEUTRAL);
+                    break;
+                case MoveState.RIGHT:
+                    currentAnimationDirection = Direction.RIGHT;
+                    animator.SetInteger("AnimationState", (int)AnimationState.RUN);
+                    break;
+                case MoveState.LEFT:
+                    currentAnimationDirection = Direction.LEFT;
+                    animator.SetInteger("AnimationState", (int)AnimationState.RUN);
+                    break;
+            }
+        }
+        // Airborn Animations
+        else
+        {
+            switch (curMoveState)
+            {
+                // When wall sliding set animation direction opposite wall slide
+                case MoveState.LEFT_WALL_SLIDE:
+                    currentAnimationDirection = Direction.RIGHT;
+                    animator.SetInteger("AnimationState", (int)AnimationState.WALL_SLIDE);
+                    break;
+                case MoveState.RIGHT_WALL_SLIDE:
+                    currentAnimationDirection = Direction.LEFT;
+                    animator.SetInteger("AnimationState", (int)AnimationState.WALL_SLIDE);
+                    break;
+                default:
+                    if (rb.velocity.y > 0)
+                    {
+                        animator.SetInteger("AnimationState", (int)AnimationState.JUMPING);
+                    }
+                    else
+                    {
+                        animator.SetInteger("AnimationState", (int)AnimationState.FALLING);
+                    }
+                    break;
+            }
+        }
+
+        if (currentAnimationDirection == Direction.RIGHT)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else
+        {
+            spriteRenderer.flipX = true;
         }
     }
 
