@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private ParticleSystem wallSlideParticles;
 
     // Physics switches
     private MoveState curMoveState = MoveState.NEUTRAL; // Current movement state
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        wallSlideParticles = GetComponent<ParticleSystem>();
     }
 
     // Behavior
@@ -237,10 +239,12 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
                 case MoveState.LEFT_WALL_SLIDE:
                     currentAnimationDirection = Direction.RIGHT;
                     animator.SetInteger("AnimationState", (int)AnimationState.WALL_SLIDE);
+                    if (!wallSlideParticles.isPlaying) wallSlideParticles.Play();
                     break;
                 case MoveState.RIGHT_WALL_SLIDE:
                     currentAnimationDirection = Direction.LEFT;
                     animator.SetInteger("AnimationState", (int)AnimationState.WALL_SLIDE);
+                    if (!wallSlideParticles.isPlaying) wallSlideParticles.Play();
                     break;
                 default:
                     if (rb.velocity.y > 0)
@@ -255,6 +259,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
             }
         }
 
+        // Set animation direction
         if (currentAnimationDirection == Direction.RIGHT)
         {
             spriteRenderer.flipX = false;
@@ -262,6 +267,12 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         else
         {
             spriteRenderer.flipX = true;
+        }
+
+        // Disable particles no matter what if not wall sliding
+        if (curMoveState != MoveState.LEFT_WALL_SLIDE && curMoveState != MoveState.RIGHT_WALL_SLIDE)
+        {
+            if(wallSlideParticles.isPlaying) wallSlideParticles.Stop(false, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 
