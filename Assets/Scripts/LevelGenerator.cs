@@ -11,6 +11,7 @@ public class LevelGenerator : MonoBehaviour {
 	public int innerWidth = 10;
 	public int ledgePeriod = 100; // Inversely related
 	public int ledgeWidth = 1;
+	public float minSpawn = 0.25f;
 
 	[Header("Block types")]
 	public GameObject wall;
@@ -49,7 +50,7 @@ public class LevelGenerator : MonoBehaviour {
 					Block block = tiles [i] [j].GetComponent<Block> ();
 					// Call post-process once the full world of blocks is created ontop of the outside
 					if (i > 0 && i < tiles.Count - 1 && block.dirty) {
-						block.PostProcess (tiles, height);
+						block.PostProcess (tiles, height, perlinSeed);
 						block.dirty = false;
 					}
 				}
@@ -71,9 +72,9 @@ public class LevelGenerator : MonoBehaviour {
 				block = wall;	
 			}
 			float noise = Random.value;
-			if (noise < 0.04f * (-y / layerDepth)) {
+			if (noise < 0.04f * ((-y / layerDepth) + minSpawn)) {
 				block = wall;
-			} else if (noise >= 0.04f * (-y / layerDepth) && noise < 0.05f * (-y / layerDepth)) {
+			} else if (noise >= 0.04f * ((-y / layerDepth) + minSpawn) && noise < 0.05f * ((-y / layerDepth) + minSpawn)) {
 				block = saw;
 			}
 		} else {

@@ -12,9 +12,9 @@ public class Block : MonoBehaviour {
 	public int y;
 	public bool dirty = true;
 
-	public void PostProcess(List<List<GameObject>> blocks, int height){
+	public void PostProcess(List<List<GameObject>> blocks, int height, int seed){
 		if (OnPostProcess != null) {
-			UnityEngine.Random.InitState (((Mathf.Abs (x) + 1) * (Mathf.Abs (y) + 1) * 1337) % 1000000);
+			UnityEngine.Random.InitState (((Mathf.Abs (x) + 1) * (Mathf.Abs (y) + 1) * 1337 * seed) % 1000000);
 			OnPostProcess(x, height - y, blocks);
 		}
 	}
