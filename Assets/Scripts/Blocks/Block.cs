@@ -14,6 +14,7 @@ public class Block : MonoBehaviour {
 
 	public void PostProcess(List<List<GameObject>> blocks, int height){
 		if (OnPostProcess != null) {
+			UnityEngine.Random.InitState (((Mathf.Abs (x) + 1) * (Mathf.Abs (y) + 1) * 1337) % 1000000);
 			OnPostProcess(x, height - y, blocks);
 		}
 	}
