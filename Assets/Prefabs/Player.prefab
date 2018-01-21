@@ -297,6 +297,7 @@ MonoBehaviour:
   MaxAirControlSpeed: 10
   WallSlideSpeed: 8
   WallSlideDrag: 50
+  invincible: 0
 --- !u!114 &114368595649159382
 MonoBehaviour:
   m_ObjectHideFlags: 1

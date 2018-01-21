@@ -118,7 +118,6 @@ public class WallBlock : MonoBehaviour {
 		if (!up) {
 			if (Random.value < baseUpSpikeProbability) {
 				Instantiate (spikeUp, transform);
-                Debug.Log("SDLKFJLSDKFJsd");
 			}
 		}
 		if (!left) {

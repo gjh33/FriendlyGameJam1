@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     public float MaxAirControlSpeed = 10; // How fast can you move in the air using controls?
     public float WallSlideSpeed = 7; // How fast you slide on the wall
     public float WallSlideDrag = 1; // How fast you slow down when grabbing the wall
+    public bool invincible = false;
 
     // Internals
     private enum MoveState { LEFT, RIGHT, NEUTRAL, RIGHT_WALL_SLIDE, LEFT_WALL_SLIDE };
@@ -84,8 +85,11 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         }
         if (collision.collider.CompareTag("Deadly"))
         {
-            Kill();
-            GameSystem.instance.GameOver();
+            if (!invincible)
+            {
+                Kill();
+                GameSystem.instance.GameOver();
+            }
         }
     }
 

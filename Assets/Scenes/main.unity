@@ -713,7 +713,7 @@ MonoBehaviour:
   ledgePeriod: 100
   ledgeWidth: 1
   wall: {fileID: 1733232389486136, guid: 667dc080845174e87b30622ee94e08d7, type: 2}
-  spike: {fileID: 1148809887185628, guid: 96e26c386811d4d4d8f158196f1af5f7, type: 2}
+  saw: {fileID: 1682321543041980, guid: 7b8bbd85aa97d4339890348c5ddace60, type: 2}
 --- !u!4 &1808769766
 Transform:
   m_ObjectHideFlags: 0
