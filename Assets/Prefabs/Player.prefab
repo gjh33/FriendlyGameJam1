@@ -217,7 +217,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 1605070734409432}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fd5044636f17ab242b127a7236102963, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -290,13 +290,13 @@ MonoBehaviour:
   JumpVelocity: 25
   JumpResistance: 5
   JumpManipulation: 0
-  MaxJumps: 2
+  MaxTotalJumps: 2
   WallJumpXForce: 10
   GroundMovementSpeed: 7
   AirControlForce: 65
   MaxAirControlSpeed: 10
-  WallSlideSpeed: 10
-  WallSlideDrag: 25
+  WallSlideSpeed: 8
+  WallSlideDrag: 50
 --- !u!114 &114368595649159382
 MonoBehaviour:
   m_ObjectHideFlags: 1

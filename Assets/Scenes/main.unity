@@ -313,7 +313,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1129405881}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.72, y: 4.56, z: 0}
+  m_LocalPosition: {x: -1.96, y: 4.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -706,12 +706,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630e4cd7449ae48a7aeaa6685abfe0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 14
+  width: 20
   perlinSeed: 0
   layerDepth: 1000
   innerWidth: 10
   ledgePeriod: 100
-  ledgeWidth: 0
+  ledgeWidth: 1
   wall: {fileID: 1733232389486136, guid: 667dc080845174e87b30622ee94e08d7, type: 2}
   spike: {fileID: 1148809887185628, guid: 96e26c386811d4d4d8f158196f1af5f7, type: 2}
 --- !u!4 &1808769766
@@ -804,7 +804,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1962833364}
-        m_MethodName: Respawn
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

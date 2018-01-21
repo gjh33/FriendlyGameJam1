@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     public float JumpVelocity = 25; // Jump strength
     public float JumpResistance = 5; // How fast your jump ends (As drag)
     public float JumpManipulation = 5; // How much holding jump affects your jump
-    public int MaxJumps = 2; // How many jumps you get after touching a surface
+    public int MaxTotalJumps = 2; // How many jumps you get after touching a surface
     public float WallJumpXForce = 10; // When wall jumping, how hard you push off
     public float GroundMovementSpeed = 7; // Vertical move speed on the ground
     public float AirControlForce = 65; // Amount of control you have mid air
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     // Physics switches
     private MoveState curMoveState = MoveState.NEUTRAL; // Current movement state
     private WallType currentWallCollision = WallType.NONE; // Current type of wall collision
-    private int curJumpCount = 0; // Number of jumps currently available to player
+    private int curJumpCount = 2; // Number of jumps currently available to player
     private bool grounded = false; // Wheter or not player is grounded
     private int wallCollisionCount; // Used to only set wall to NONE if no walls are being collided with
     private bool jumpKeyHeld = false;
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     {
         if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Floor"))
         {
-            curJumpCount = MaxJumps;
+            curJumpCount = MaxTotalJumps;
         }
         if (collision.collider.CompareTag("Floor"))
         {
@@ -299,7 +299,6 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
             Vector2 wallDragForce = new Vector2(0, 0);
             wallDragForce.y = WallSlideDrag;
             rb.AddForce(wallDragForce);
-            Debug.Log("dragging");
         }
     }
 }

@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Wall
   - Floor
-  - Dealy
+  - Deadly
   layers:
   - Default
   - TransparentFX

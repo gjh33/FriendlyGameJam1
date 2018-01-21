@@ -70,7 +70,7 @@ public class GameSystem : MonoBehaviour {
 
     public void GameOver()
     {
-        UISystem.instance.DisplayPlayUI();
+        UISystem.instance.DisplayGameOverScreen();
     }
 
     public float GetDepth()
