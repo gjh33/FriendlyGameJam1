@@ -10,6 +10,7 @@ public class Block : MonoBehaviour {
 	public int x;
 	[HideInInspector]
 	public int y;
+	public bool dirty = true;
 
 	public void PostProcess(List<List<GameObject>> blocks, int height){
 		if (OnPostProcess != null) {

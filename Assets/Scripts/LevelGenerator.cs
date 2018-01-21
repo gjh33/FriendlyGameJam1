@@ -42,11 +42,18 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	public void PostProcess(List<List<GameObject>> tiles, int height){
-		foreach (List<GameObject> line in tiles) {
-			foreach (GameObject child in line) {
-				if (child != null) {
-					child.GetComponent<Block> ().PostProcess (tiles, height);
+		for (int i = 0; i < tiles.Count; i++) {
+			for (int j = 0; j < tiles[i].Count; j++) {
+				Random.InitState((new Vector3 (i, (j + height) * 1337 % 81512345, perlinSeed)).GetHashCode ());
+				if (tiles[i][j] != null) {
+					Block block = tiles [i] [j].GetComponent<Block> ();
+					// Call post-process once the full world of blocks is created ontop of the outside
+					if (i > 0 && i < tiles.Count - 1 && block.dirty) {
+						block.PostProcess (tiles, height);
+						block.dirty = false;
+					}
 				}
+
 			}
 		}
 	}
@@ -56,28 +63,29 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private GameObject GenerateBlock(float x, float y){
+		GameObject block = null;
 		if (y < 0) {
 			int leftRandOffset = Mathf.RoundToInt(ledgeWidth * Mathf.PerlinNoise(((float)y + perlinSeed) / ledgePeriod, 0));
 			int rightRandOffset = Mathf.RoundToInt(ledgeWidth * Mathf.PerlinNoise(((float)y + perlinSeed + ledgeSeed) / ledgePeriod, 0));
 			if (x < width / 2 - innerWidth / 2 - leftRandOffset || x >= width / 2 + innerWidth / 2 + rightRandOffset) {
-				return wall;	
+				block = wall;	
 			}
 			float noise = Random.value;
 			if (noise < 0.05f * (-y / layerDepth)) {
-				return spike;
+				block = wall;
 			}
 		} else {
 			// above zone generation
 			if ((x < width / 2 - innerWidth / 2 - 1 || x >= width / 2 + innerWidth / 2 + 1) && y == 0) {
-				return wall;
+				block = wall;
 			} else if ((x < width / 2 - innerWidth / 2 - 3 || x >= width / 2 + innerWidth / 2 + 3) && y == 1) {
-				return wall;
+				block = wall;
 			} else if ((x < width / 2 - innerWidth / 2 - 4 || x >= width / 2 + innerWidth / 2 + 4) && (y > 1 && y <= 10)) {
-				return wall;
+				block = wall;
 			} else if (y > 10) {
-				return wall;
+				block = wall;
 			}
 		}
-		return null;
+		return block;
 	}
 }

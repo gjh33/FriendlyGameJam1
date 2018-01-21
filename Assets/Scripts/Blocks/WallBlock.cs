@@ -4,18 +4,32 @@ using UnityEngine;
 
 [RequireComponent(typeof(Block))]
 public class WallBlock : MonoBehaviour {
+	[Header("Parameters")]
+	public float baseSpikeProbability = 0.05f;
+	public float baseUpSpikeProbability = 0.9f;
 
+	[Header("Tiles")]
 	public Sprite tile00;
 	public Sprite tile01;
 	public Sprite tile02;
 	public Sprite tile03;
+	public Sprite tile04;
 	public Sprite tile10;
 	public Sprite tile11;
+	public Sprite tile12;
 	public Sprite tile13;
+	public Sprite tile14;
 	public Sprite tile20;
 	public Sprite tile21;
 	public Sprite tile22;
 	public Sprite tile23;
+	public Sprite tile24;
+
+	[Header("Spikes")]
+	public GameObject spikeUp;
+	public GameObject spikeLeft;
+	public GameObject spikeRight;
+	public GameObject spikeDown;
 
 	new private SpriteRenderer renderer;
 
@@ -72,7 +86,7 @@ public class WallBlock : MonoBehaviour {
 			renderer.sprite = tile10;
 		} else if (up && left && right) {
 			if (Random.Range (0, 1) == 1) {
-				renderer.sprite = tile21; 
+				renderer.sprite = tile21;
 			} else {
 				renderer.sprite = tile22; 
 			}
@@ -90,9 +104,36 @@ public class WallBlock : MonoBehaviour {
 			renderer.sprite = tile03;
 		} else if (down && right) {
 			renderer.sprite = tile00;
+		} else if (down && up) {
+			renderer.sprite = tile14;
+		} else if (left && !right) {
+			renderer.sprite = tile24;
+		} else if (right && !left) {
+			renderer.sprite = tile04;
 		} else {
-			// Impossible creation :(
-			Destroy (gameObject);
+			renderer.sprite = tile12;
+		}
+
+		// Generate additional features
+		if (!up) {
+			if (Random.value < baseUpSpikeProbability) {
+				Instantiate (spikeUp, transform);
+			}
+		}
+		if (!left) {
+			if (Random.value < baseSpikeProbability) {
+				Instantiate (spikeLeft, transform);
+			}
+		}
+		if (!right) {
+			if (Random.value < baseSpikeProbability) {
+				Instantiate (spikeRight, transform);
+			}
+		}
+		if (!down) {
+			if (Random.value < baseSpikeProbability) {
+				Instantiate (spikeDown, transform);
+			}
 		}
 	}
 }

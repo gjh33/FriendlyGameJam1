@@ -79,17 +79,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81be5448626854732bbb412861335742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseSpikeProbability: 0.1
+  baseUpSpikeProbability: 0.9
   tile00: {fileID: 21300000, guid: d4f7095afa87a414caf27e88123dbca6, type: 3}
   tile01: {fileID: 21300000, guid: 515d91518f392494184167f29fd51209, type: 3}
   tile02: {fileID: 21300000, guid: 31fc4bb260cf3496894af146e12dac3a, type: 3}
   tile03: {fileID: 21300000, guid: 8a46694baf6d542cc87770b65caef436, type: 3}
+  tile04: {fileID: 21300000, guid: 1b309ebe4703d4512a8c56155f2a72a6, type: 3}
   tile10: {fileID: 21300000, guid: 4e6786a79525f445a8d07bfa2a40d7a8, type: 3}
   tile11: {fileID: 21300000, guid: f00b47490eb7a42e4988ccd62d2e29fc, type: 3}
+  tile12: {fileID: 21300000, guid: e09cdb782e327468a95ef30cece62e6a, type: 3}
   tile13: {fileID: 21300000, guid: 71a1981feb5cc45c6a91ca395b16889d, type: 3}
+  tile14: {fileID: 21300000, guid: 45758a0e1b3e14d2fb0be4c88ace1260, type: 3}
   tile20: {fileID: 21300000, guid: ede4cfd621a74415cbac8ab185e38fbd, type: 3}
   tile21: {fileID: 21300000, guid: e6ec88a8f2fd64d9f9e1753c457600b7, type: 3}
   tile22: {fileID: 21300000, guid: 3bf57bba63a2f4ba990375788eb3f268, type: 3}
   tile23: {fileID: 21300000, guid: 03be73b2b973d448b90796048823b82a, type: 3}
+  tile24: {fileID: 21300000, guid: ceb1089c9693e4ddbaed255b3d791bb8, type: 3}
+  spikeUp: {fileID: 1412305131339104, guid: 6187928847f804626941ca976fd6d80a, type: 2}
+  spikeLeft: {fileID: 1554756152328062, guid: 6a4ac2ba91c534448b64250b3d0c9d2b, type: 2}
+  spikeRight: {fileID: 1751057446705908, guid: 56ddb45c396b548bba6aca9d64dd2229, type: 2}
+  spikeDown: {fileID: 1271691973322412, guid: 78987a3d8d71142a4a6f2fb1e441374c, type: 2}
 --- !u!114 &114693382323315564
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -101,6 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b03ccb932240470ba6749f0d28cb1c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  x: 0
+  y: 0
+  dirty: 1
 --- !u!212 &212570865100250872
 SpriteRenderer:
   m_ObjectHideFlags: 1
