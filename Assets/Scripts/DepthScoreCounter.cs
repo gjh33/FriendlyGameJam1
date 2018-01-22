@@ -14,6 +14,6 @@ public class DepthScoreCounter : MonoBehaviour {
 
     void Update () {
         int depthInt = (int)GameSystem.instance.GetDepth();
-        scoreText.text = depthInt.ToString();
+        scoreText.text = Mathf.Clamp(depthInt, 0, int.MaxValue).ToString();
 	}
 }

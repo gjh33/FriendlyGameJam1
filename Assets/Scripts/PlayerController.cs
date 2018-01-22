@@ -36,13 +36,15 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private ParticleSystem wallSlideParticles;
+    private ParticleSystem.EmissionModule wallSlideParticleEmitter;
 
     // Physics switches
     private MoveState curMoveState = MoveState.NEUTRAL; // Current movement state
     private WallType currentWallCollision = WallType.NONE; // Current type of wall collision
-    private int curJumpCount = 2; // Number of jumps currently available to player
+    private int curJumpCount = 0; // Number of jumps currently available to player
     private bool grounded = false; // Wheter or not player is grounded
-    private int wallCollisionCount; // Used to only set wall to NONE if no walls are being collided with
+    private int wallCollisionCount = 0; // Used to only set wall to NONE if no walls are being collided with
+    private int floorCollisionCount = 0;
     private bool jumpKeyHeld = false;
 
     void Awake()
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         wallSlideParticles = GetComponent<ParticleSystem>();
+        wallSlideParticleEmitter = wallSlideParticles.emission;
     }
 
     // Behavior
@@ -99,7 +102,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         }
         if (collision.collider.CompareTag("Floor"))
         {
-            grounded = true;
+            floorCollisionCount++;
         }
         if (collision.collider.CompareTag("Deadly"))
         {
@@ -108,6 +111,25 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
                 Kill();
                 GameSystem.instance.GameOver();
             }
+        }
+
+        // If we are colliding with floors then we are grounded
+        if (floorCollisionCount > 0)
+        {
+            grounded = true;
+        }
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Floor"))
+        {
+            floorCollisionCount--;
+        }
+
+        if (floorCollisionCount <= 0)
+        {
+            grounded = false;
         }
     }
 
@@ -129,7 +151,6 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
                 currentAnimationDirection = Direction.LEFT;
             }
             rb.velocity = new Vector2(xVel, JumpVelocity);
-            grounded = false;
             curJumpCount--;
         }
     }
@@ -137,6 +158,15 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
     public void Kill()
     {
         gameObject.SetActive(false);
+        rb.velocity = new Vector2(0, 0);
+        currentAnimationDirection = Direction.RIGHT;
+        curMoveState = MoveState.NEUTRAL;
+        currentWallCollision = WallType.NONE;
+        curJumpCount = MaxTotalJumps;
+        grounded = false;
+        wallCollisionCount = 0;
+        floorCollisionCount = 0;
+        jumpKeyHeld = false;
     }
     
     private void handleInput()
@@ -239,12 +269,12 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
                 case MoveState.LEFT_WALL_SLIDE:
                     currentAnimationDirection = Direction.RIGHT;
                     animator.SetInteger("AnimationState", (int)AnimationState.WALL_SLIDE);
-                    if (!wallSlideParticles.isPlaying) wallSlideParticles.Play();
+                    wallSlideParticleEmitter.enabled = true;
                     break;
                 case MoveState.RIGHT_WALL_SLIDE:
                     currentAnimationDirection = Direction.LEFT;
                     animator.SetInteger("AnimationState", (int)AnimationState.WALL_SLIDE);
-                    if (!wallSlideParticles.isPlaying) wallSlideParticles.Play();
+                    wallSlideParticleEmitter.enabled = true;
                     break;
                 default:
                     if (rb.velocity.y > 0)
@@ -272,7 +302,7 @@ public class PlayerController : MonoBehaviour, HitboxHandler {
         // Disable particles no matter what if not wall sliding
         if (curMoveState != MoveState.LEFT_WALL_SLIDE && curMoveState != MoveState.RIGHT_WALL_SLIDE)
         {
-            if(wallSlideParticles.isPlaying) wallSlideParticles.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+            wallSlideParticleEmitter.enabled = false;
         }
     }
 

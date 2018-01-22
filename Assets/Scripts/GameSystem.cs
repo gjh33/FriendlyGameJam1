@@ -7,6 +7,7 @@ public class GameSystem : MonoBehaviour {
     public static GameSystem instance;
 
     public GameObject playerPrefab;
+    public LevelGenerator levelGenerator;
     public GameObject spawnLocation;
     public float surfaceY;
 
@@ -46,6 +47,7 @@ public class GameSystem : MonoBehaviour {
     public void StartGame()
     {
         UISystem.instance.DisplayPlayUI();
+        levelGenerator.perlinSeed = System.DateTime.UtcNow.Millisecond;
         Respawn();
     }
 
